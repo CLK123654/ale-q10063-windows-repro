@@ -1,0 +1,5 @@
+支持Windows11。主软件为SQLite3.40或更高版本，Windows中需让sqlite3.exe可从PATH调用。辅助运行时为Node.js20或更高版本，PowerShell进入input_data目录后执行npm run run。
+
+SQLite承担JSON展开、时间换算、窗口累计、表关联和派生表重建。Node.js只负责读取规则、调用SQLite命令行客户端及导出CSV。任务不需要数据库服务器、商业许可证或外部服务，正式运行阶段不得联网。
+
+建议准备2个CPU核心、2GB内存和200MB可写磁盘空间。运行账户只需读取database、rules和starter，并能写入output目录。一次执行通常少于5秒，命令超时为30秒。

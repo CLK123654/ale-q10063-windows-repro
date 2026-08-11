@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "skill": "humanizer-zh",
+  "result": "PASS",
+  "score": 47,
+  "threshold": 45,
+  "dimensions": {
+    "directness": 10,
+    "sentence_rhythm": 9,
+    "trustworthiness": 10,
+    "human_authenticity": 9,
+    "conciseness": 9
+  },
+  "checks": {
+    "grandiose_claims": false,
+    "promotional_language": false,
+    "vague_attribution": false,
+    "mechanical_three_part_structure": false,
+    "negative_parallelism": false,
+    "excessive_connectors": false,
+    "excessive_quotes": false,
+    "mixed_boundary_spaces": false,
+    "unsupported_facts": false,
+    "online_ai_detection_used_as_conclusion": false
+  },
+  "review_note": "正文直接交代发送服务、运营和活动负责人的用途，再按真实数据流说明输入、SQLite裁决和交付。规则都落在输入文件或数据库字段上，没有宣传式背景、模糊权威、凑数排比和自动判卷口吻。"
+}

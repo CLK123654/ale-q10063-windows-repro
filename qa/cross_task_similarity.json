@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "gate": "cross_task_similarity",
+  "current_qid": "10063",
+  "comparison_count": 217,
+  "same_software_comparison_count": 45,
+  "method": "NFKC归一化后计算标题3字片段和正文5字片段Dice相似度",
+  "thresholds": {
+    "title": 0.72,
+    "body": 0.55
+  },
+  "all_tasks_top_five": [
+    {
+      "qid": "13762",
+      "title_score": 0.2439,
+      "body_score": 0.007
+    },
+    {
+      "qid": "11326",
+      "title_score": 0.24,
+      "body_score": 0.018
+    },
+    {
+      "qid": "13749",
+      "title_score": 0.2381,
+      "body_score": 0.0094
+    },
+    {
+      "qid": "13717",
+      "title_score": 0.2128,
+      "body_score": 0.0259
+    },
+    {
+      "qid": "10528",
+      "title_score": 0.2083,
+      "body_score": 0.0799
+    }
+  ],
+  "same_software_top_five": [
+    {
+      "qid": "13762",
+      "title_score": 0.2439,
+      "body_score": 0.007
+    },
+    {
+      "qid": "11326",
+      "title_score": 0.24,
+      "body_score": 0.018
+    },
+    {
+      "qid": "13749",
+      "title_score": 0.2381,
+      "body_score": 0.0094
+    },
+    {
+      "qid": "13717",
+      "title_score": 0.2128,
+      "body_score": 0.0259
+    },
+    {
+      "qid": "10528",
+      "title_score": 0.2083,
+      "body_score": 0.0799
+    }
+  ],
+  "threshold_hits": [],
+  "pass": true,
+  "final_global_rescan_required": true
+}

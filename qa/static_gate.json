@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "result": "PASS",
+  "scanned_sources": 351,
+  "violations": [],
+  "answer_sheets": [
+    "交付物答案清单",
+    "固定字段答案",
+    "固定集合答案",
+    "固定数值答案",
+    "允许变体答案"
+  ],
+  "specification_sheets": [
+    "任务规格转化"
+  ],
+  "task_spec_columns": [
+    "模块",
+    "规格内容"
+  ],
+  "task_spec_column_count": 2,
+  "forbidden_spec_labels": [],
+  "declared_delivery_paths": [
+    "output/notify_plan.db",
+    "output/reports/campaign_quota_report.csv",
+    "output/reports/send_plan.csv",
+    "output/reports/suppression_audit.csv",
+    "output/sql/rebuild_notify_plan.sql"
+  ],
+  "reference_paths": [
+    "output/notify_plan.db",
+    "output/reports/campaign_quota_report.csv",
+    "output/reports/send_plan.csv",
+    "output/reports/suppression_audit.csv",
+    "output/sql/rebuild_notify_plan.sql"
+  ],
+  "business_inputs": [
+    "input_data/database/notify_control.db",
+    "input_data/rules/window_policy.json",
+    "input_data/rules/decision_policy.csv",
+    "input_data/rules/report_schema.json"
+  ],
+  "business_inputs_present": true,
+  "online_ai_detector_used_as_conclusion": false
+}

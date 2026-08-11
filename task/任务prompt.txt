@@ -1,0 +1,14 @@
+通知平台要在新一轮批量触达前核对离线候选队列。发送服务需要一份可以直接入队的清单，运营人员要知道每个未发送候选被拦下的原因，活动负责人还要查看配额余量。请在Windows11支持环境中使用SQLite3.40或更高版本完成这次裁决。
+
+输入包中的database/notify_control.db保存订阅者、活动规则、候选队列、历史送达和人工抑制记录。rules/window_policy.json给出报告窗口与统计范围，rules/decision_policy.csv规定裁决先后和原因说明，rules/report_schema.json规定三份业务报表的列与排序。README.md列出运行入口和文件边界。starter/rebuild_notify_plan.sql是待完成的SQL起点。
+
+先核对五张源表的结构和主键，再按规则文件逐个裁决候选。请求时间需要换算成订阅者本地时刻，跨午夜静默区间按左闭右开处理。去重只比较同一订阅者、活动、渠道和dedupe_key，较早且尚未被前置规则拦下的候选占用窗口。用户日配额累计同一UTC日期的历史送达与本次较早计划；活动配额累计报告窗口内历史送达，再按活动优先级、请求时间和event_id分配剩余额度。每个候选只能有一个最终结果。
+
+把完成版SQL保存为output/sql/rebuild_notify_plan.sql。在input_data目录执行npm run run后，交付以下文件：
+output/notify_plan.db
+output/sql/rebuild_notify_plan.sql
+output/reports/send_plan.csv
+output/reports/suppression_audit.csv
+output/reports/campaign_quota_report.csv
+
+notify_plan.db须原样保留五张源表，并包含candidate_decision、send_plan、suppression_audit、campaign_quota_report和repair_meta。三份CSV必须符合report_schema.json。重复运行应从空的动态输出重新生成相同业务结果。数据库、任一规则文件或完成版SQL缺失或无效时，命令应返回非零状态，并删除本轮生成的数据库和三份报表。运行期间不得联网，也不能把Reference中的结果或指定event_id写入生成逻辑。

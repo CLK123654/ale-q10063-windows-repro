@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "result": "PASS",
+  "business_goal": "用SQLite完成通知候选的发送裁决与配额审计",
+  "substantive_actions": 8,
+  "input_files": [
+    "database/notify_control.db",
+    "rules/window_policy.json",
+    "rules/decision_policy.csv",
+    "rules/report_schema.json",
+    "starter/rebuild_notify_plan.sql"
+  ],
+  "consumer_outputs": {
+    "output/notify_plan.db": "发送服务、运营和审计查询完整裁决链",
+    "output/sql/rebuild_notify_plan.sql": "数据工程师维护规则和派生表",
+    "output/reports/send_plan.csv": "发送服务载入可触达消息",
+    "output/reports/suppression_audit.csv": "运营人员查看未发送原因",
+    "output/reports/campaign_quota_report.csv": "活动负责人核对配额余量"
+  },
+  "candidate_facing_validation_files": [],
+  "reference_derivable_from_input": true,
+  "prompt_rubric_attachment_closed": true,
+  "windows_native_entry": "npm run run"
+}

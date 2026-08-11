@@ -1,0 +1,48 @@
+{
+  "task_asset_id": "sqlite_notification_budget_decision_audit",
+  "software": "SQLite",
+  "runner": "windows-2025",
+  "node_major": 24,
+  "sqlite_version": "3.51.2",
+  "entrypoint": "npm run run",
+  "attachments": {
+    "输入数据包.zip": "f93a0b9253403e5d045b1690f64386029486ed556e1b14b17e9cfcbfed9fc7ab",
+    "reference.zip": "abe46cc48ad69153d15120723b02581cacd448fdd2e537c3bbfb898a906e8226",
+    "关键标准答案.xlsx": "6d3fd784328cf7dd315edac0a6e3d3c631c76058dd0bb3d5c32269f259fbc11b",
+    "任务规格转化.xlsx": "df4e85455c69bf8f553e828359d0abdf849a4a382461ab19eb79eeca54e20164"
+  },
+  "input_members": [
+    "input_data/database/",
+    "input_data/database/notify_control.db",
+    "input_data/rules/",
+    "input_data/rules/report_schema.json",
+    "input_data/rules/decision_policy.csv",
+    "input_data/rules/window_policy.json",
+    "input_data/starter/",
+    "input_data/starter/rebuild_notify_plan.sql",
+    "input_data/tools/",
+    "input_data/tools/run-task.mjs",
+    "input_data/README.md",
+    "input_data/package.json"
+  ],
+  "reference_members": [
+    "output/",
+    "output/notify_plan.db",
+    "output/reports/",
+    "output/reports/send_plan.csv",
+    "output/reports/campaign_quota_report.csv",
+    "output/reports/suppression_audit.csv",
+    "output/sql/",
+    "output/sql/rebuild_notify_plan.sql"
+  ],
+  "answer_sheets": [
+    "交付物答案清单",
+    "固定字段答案",
+    "固定集合答案",
+    "固定数值答案",
+    "允许变体答案"
+  ],
+  "specification_sheets": [
+    "任务规格转化"
+  ]
+}

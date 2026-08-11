@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "table_profile": "ale218",
+  "result": "PASS",
+  "task_id": "10063",
+  "task_slug": "sqlite_notification_budget_decision_audit",
+  "artifacts": {
+    "输入数据包.zip": {
+      "sha256": "f93a0b9253403e5d045b1690f64386029486ed556e1b14b17e9cfcbfed9fc7ab"
+    },
+    "reference.zip": {
+      "sha256": "abe46cc48ad69153d15120723b02581cacd448fdd2e537c3bbfb898a906e8226"
+    },
+    "关键标准答案.xlsx": {
+      "sha256": "6d3fd784328cf7dd315edac0a6e3d3c631c76058dd0bb3d5c32269f259fbc11b"
+    },
+    "任务规格转化.xlsx": {
+      "sha256": "df4e85455c69bf8f553e828359d0abdf849a4a382461ab19eb79eeca54e20164"
+    }
+  },
+  "primary_software": {
+    "name": "SQLite",
+    "version": "3.43.2",
+    "executed": true
+  },
+  "clean_room_runs": [
+    {
+      "root_id": "通知 裁决甲",
+      "command": "npm run run",
+      "timeout_seconds": 60,
+      "return_code": 0,
+      "output_started_empty": true,
+      "primary_software_executed": true,
+      "input_unchanged": true,
+      "reference_match": true,
+      "process_runs": 2,
+      "generated_paths": [
+        "output/notify_plan.db",
+        "output/sql/rebuild_notify_plan.sql",
+        "output/reports/send_plan.csv",
+        "output/reports/suppression_audit.csv",
+        "output/reports/campaign_quota_report.csv"
+      ]
+    },
+    {
+      "root_id": "通知 裁决乙",
+      "command": "npm run run",
+      "timeout_seconds": 60,
+      "return_code": 0,
+      "output_started_empty": true,
+      "primary_software_executed": true,
+      "input_unchanged": true,
+      "reference_match": true,
+      "process_runs": 2,
+      "generated_paths": [
+        "output/notify_plan.db",
+        "output/sql/rebuild_notify_plan.sql",
+        "output/reports/send_plan.csv",
+        "output/reports/suppression_audit.csv",
+        "output/reports/campaign_quota_report.csv"
+      ]
+    }
+  ],
+  "positive_mutations": [
+    {
+      "name": "CMP_CREATOR日配额从1改为2",
+      "input_changed": true,
+      "behavior_changed": true,
+      "assertions_passed": true,
+      "observed_change": "N014进入发送计划，发送数由4变为5，抑制数由11变为10"
+    }
+  ],
+  "negative_cases": [
+    {
+      "name": "decision_policy.csv缺失",
+      "return_code": 2,
+      "failed_closed": true,
+      "no_stale_deliverables": true
+    }
+  ],
+  "line_ending_reproduction": {
+    "lf_final_input_passed": true,
+    "crlf_variant_passed": true,
+    "crlf_reference_match": true
+  },
+  "forbidden_shortcuts": {
+    "no_precomputed_outputs": true,
+    "no_event_id_hardcoding": true,
+    "no_static_only_substitute": true,
+    "no_authoring_directory_dependency": true
+  },
+  "windows_native_reproduction": {
+    "required": true,
+    "windows_command": "npm run run",
+    "original_data_paths": [
+      "input_data/database/notify_control.db",
+      "input_data/rules/window_policy.json",
+      "input_data/rules/decision_policy.csv",
+      "input_data/rules/report_schema.json"
+    ],
+    "windows_software_operations": [
+      "SQLite打开源数据库并执行完成版SQL",
+      "SQLite使用时间函数、JSON展开和窗口函数完成候选裁决",
+      "SQLite重建派生表和唯一索引",
+      "SQLite按报表合同导出三份CSV"
+    ],
+    "linux_executables": [],
+    "linux_executables_executed": false,
+    "no_wsl_required": true,
+    "no_linux_container_required": true,
+    "no_posix_shell_required": true,
+    "no_unix_only_api_required": true,
+    "cross_platform_paths": true,
+    "actual_windows_run": false
+  },
+  "runner": {
+    "os": "darwin",
+    "image": null,
+    "commit_sha": null,
+    "workflow_run_id": null
+  }
+}
