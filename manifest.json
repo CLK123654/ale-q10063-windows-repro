@@ -3,7 +3,7 @@
   "software": "SQLite",
   "runner": "windows-2025",
   "node_major": 24,
-  "sqlite_version": "3.51.2",
+  "sqlite_version": "3.53.4",
   "entrypoint": "npm run run",
   "attachments": {
     "输入数据包.zip": "f93a0b9253403e5d045b1690f64386029486ed556e1b14b17e9cfcbfed9fc7ab",

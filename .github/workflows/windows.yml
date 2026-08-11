@@ -25,12 +25,12 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install SQLite 3.51.2
+      - name: Install SQLite 3.53.4
         shell: pwsh
         run: |
           $archive = Join-Path $env:RUNNER_TEMP 'sqlite-tools.zip'
           $destination = Join-Path $env:RUNNER_TEMP 'sqlite-tools'
-          Invoke-WebRequest -Uri 'https://www.sqlite.org/2025/sqlite-tools-win-x64-3510200.zip' -OutFile $archive
+          Invoke-WebRequest -Uri 'https://www.sqlite.org/2026/sqlite-tools-win-x64-3530400.zip' -OutFile $archive
           Expand-Archive -LiteralPath $archive -DestinationPath $destination -Force
           $sqlite = Get-ChildItem -LiteralPath $destination -Filter sqlite3.exe -File -Recurse | Select-Object -First 1
           if ($null -eq $sqlite) { throw 'sqlite3.exe not found' }
