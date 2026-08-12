@@ -1,0 +1,90 @@
+{
+  "result": "PASS",
+  "task_key": "id:10063",
+  "change_type": "business_data_label_text_only",
+  "windows_rerun_required": false,
+  "business_semantics_changed": false,
+  "unchanged": [
+    "data",
+    "rules",
+    "code",
+    "attachment_member_structure",
+    "answers",
+    "score_semantics"
+  ],
+  "authenticity_findings": {
+    "candidate_visible_business_data_label_hits_before": 0,
+    "note": "原输入、17字段和工作簿没有把业务数据称为虚构、模拟、合成、示例、样例、测试或演练数据。"
+  },
+  "replacements": [
+    {
+      "file": "任务规格转化.xlsx#任务规格转化",
+      "before_sha256": "f4011749f3e55d80be7c1d669aaea924def03df58b8bb51a1c6fb66b05710bdf",
+      "after_sha256": "c9ec7f63f801bc2488ccabc51f6b4a7ed7c738a0812dfefc1da4edd7a2b31548",
+      "changes": [
+        [
+          "业务核对：SQLite版本；源表结构与行；裁决覆盖；本地时间；原因次序；去重窗口；两级配额；唯一索引；报表列序与排序",
+          "业务核对：核对源表结构与业务行、裁决覆盖、本地时间、原因次序、去重窗口、两级配额、唯一索引，以及报表列序与排序"
+        ],
+        [
+          "不适合作为评分点的内容：SQL缩进、别名、注释、内部公用表表达式拆分、索引名称、数据库页布局、LF或CRLF差异和不改变业务结果的日志",
+          "实现边界：输入数据库和规则文件保持只读，不连接通知平台、消息供应商或外部数据库，目标数据库、SQL和三份报表只写入output目录"
+        ]
+      ]
+    }
+  ],
+  "current_attachment_sha256": {
+    "输入数据包.zip": "3a3fd9dd7fd7410c2f2f947867955938ac975e2f6f354c4d6143a516390cdc48",
+    "reference.zip": "abe46cc48ad69153d15120723b02581cacd448fdd2e537c3bbfb898a906e8226",
+    "关键标准答案.xlsx": "f4c632c83e0a9c512932e3281e1a93870df14f3ca456062e6477007145cff465",
+    "任务规格转化.xlsx": "c9ec7f63f801bc2488ccabc51f6b4a7ed7c738a0812dfefc1da4edd7a2b31548"
+  },
+  "scans": {
+    "scope": [
+      "17_fields",
+      "input_zip_all_members",
+      "reference_zip_all_members",
+      "answer_workbook_all_cells",
+      "spec_workbook_all_cells",
+      "public_repo_candidate_text"
+    ],
+    "mixed_boundary_space_natural_language": 0,
+    "quote_natural_language": 0,
+    "controlled_enum_exemption": "Computing, Data & Mathematical Sciences 计算、数据与数学科学",
+    "business_data_label_hits": 0,
+    "process_language_hits": 0,
+    "static_gate": ".qa/static_gate.json"
+  },
+  "specification_semantic_audit": {
+    "two_column_structure": true,
+    "task_id": "sqlite_notification_budget_routing",
+    "task_id_is_name_based_lower_snake_case": true,
+    "input_source_is_current_batch": true,
+    "business_goal_is_realistic": true,
+    "deliverables_are_closed": true,
+    "software_steps_are_operational": true,
+    "implementation_boundary_is_business_facing": true,
+    "table_field_collage_hits": 0,
+    "authoring_or_validation_voice_hits": 0,
+    "ai_template_hits": 0
+  },
+  "humanizer_zh": {
+    "total": 47,
+    "threshold": 45,
+    "online_ai_detection_used_as_conclusion": false,
+    "file": ".qa/humanizer_review.json"
+  },
+  "workbook_visual_review": {
+    "result": "PASS",
+    "preview": "qa/workbooks/任务规格转化.png",
+    "clipped_cells": 0,
+    "formula_errors": 0
+  },
+  "reused_windows_evidence": {
+    "run_id": 31584138858,
+    "run_file": "../../evidence/10063/run-31584138858.json",
+    "reproduction_file": "../../evidence/10063/windows-reproduction.json",
+    "audit_file": "../../evidence/10063/windows-audit.json",
+    "reason": "本次只将任务规格中的评测式末行改为业务核对与实现边界，没有改变业务数据、规则、代码、成员结构、答案或评分语义。"
+  }
+}
