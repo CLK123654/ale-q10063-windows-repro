@@ -1,6 +1,6 @@
 总分100分
 
-检查项内容：交付数据库、完成版SQL和三份业务报表
+1. 交付数据库、完成版SQL和三份业务报表
 分值：14分
 标准答案或判定规则：output/notify_plan.db、output/sql/rebuild_notify_plan.sql、output/reports/send_plan.csv、output/reports/suppression_audit.csv和output/reports/campaign_quota_report.csv均存在且可读
 关键字段或路径：上述五个相对路径
@@ -12,7 +12,7 @@
 优先级：Gate项
 所属层级：L1任务指令遵循层
 
-检查项内容：源表保真与目标库结构
+2. 源表保真与目标库结构
 分值：14分
 标准答案或判定规则：subscribers、campaign_rules、candidate_queue、delivery_history和suppression_overrides的结构与业务行和输入库一致；目标库包含candidate_decision、send_plan、suppression_audit、campaign_quota_report和repair_meta
 关键字段或路径：database/notify_control.db、output/notify_plan.db、sqlite_schema及五张源表的主键
@@ -24,7 +24,7 @@
 优先级：Gate项
 所属层级：L3输入数据导入与完整性层
 
-检查项内容：候选覆盖与前置裁决
+3. 候选覆盖与前置裁决
 分值：18分
 标准答案或判定规则：candidate_queue中的event_id在candidate_decision中各出现一次。每条记录按decision_policy.csv的rank选择首个适用原因，用户、活动、历史送达、暂停状态、人工抑制和层级许可均从输入表关联判断
 关键字段或路径：candidate_decision.event_id、candidate_decision.final_reason和rules/decision_policy.csv
@@ -36,7 +36,7 @@
 优先级：高权重项
 所属层级：L6领域计算与专业规则层
 
-检查项内容：本地静默、候选去重与两级配额
+4. 本地静默、候选去重与两级配额
 分值：20分
 标准答案或判定规则：requested_at_utc按timezone_offset_min换算本地时刻，静默时段按左闭右开区间判断；候选去重在同一业务键和dedupe_minutes内取较早有效候选；用户日配额和活动配额分别按题面声明的历史窗口与排序累计
 关键字段或路径：requested_at_utc、timezone_offset_min、quiet_start_local、quiet_end_local、dedupe_minutes、daily_cap、campaign_cap和priority
@@ -48,7 +48,7 @@
 优先级：高权重项
 所属层级：L6领域计算与专业规则层
 
-检查项内容：发送计划
+5. 发送计划
 分值：14分
 标准答案或判定规则：send_plan表和send_plan.csv只收录final_reason为send的候选，按report_schema.json声明的业务键排序。send_priority取活动优先级，provider_message_id按合同规则由event_id生成，action为send
 关键字段或路径：output/notify_plan.db中的send_plan及output/reports/send_plan.csv
@@ -60,7 +60,7 @@
 优先级：高权重项
 所属层级：L7产物结构或Schema或专业对象层
 
-检查项内容：抑制审计
+6. 抑制审计
 分值：12分
 标准答案或判定规则：suppression_audit收录candidate_decision中final_reason不是send的全部候选，reason取对应裁决结果，detail取decision_policy.csv中的说明
 关键字段或路径：output/notify_plan.db中的suppression_audit及output/reports/suppression_audit.csv的event_id、reason、detail和requested_at_utc
@@ -72,7 +72,7 @@
 优先级：高权重项
 所属层级：L9跨产物一致性与可追溯层
 
-检查项内容：活动配额报告
+7. 活动配额报告
 分值：8分
 标准答案或判定规则：campaign_quota_report覆盖campaign_rules中的全部活动。existing_sent_count按报告窗口内delivery_history计数，planned_send_count和suppressed_count按本轮裁决汇总，remaining_after_plan等于campaign_cap减去历史送达和计划发送且不小于0
 关键字段或路径：output/notify_plan.db中的campaign_quota_report及output/reports/campaign_quota_report.csv的八列
