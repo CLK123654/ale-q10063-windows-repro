@@ -127,7 +127,7 @@ function Assert-NaturalText {
   $han = '[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]'
   $boundary = "(?:$han$space[A-Za-z0-9]|[A-Za-z0-9]$space$han|[A-Za-z]$space[0-9]|[0-9]$space[A-Za-z])"
   $riskTerms = @('此外', '至关重要', '深入探讨', '彰显', '赋能', '无缝', '不断演变的格局', '不仅', '不只是', '值得注意的是', '专家认为', '行业报告显示', '观察者指出', '未来展望', '挑战与未来', '——')
-  $processTerms = @('制题返修', '去AI', '修改题目', '规则调整', 'Windows复现', 'GitHub Actions', '双干净目录', '动态变化', '负例', '附件哈希', '飞书回读')
+  $processTerms = @('制题返修', '去AI', '修改题目', '规则调整', 'Windows复现', 'Windows验证', 'GitHub Actions', 'CI门禁', '双干净目录', '动态变化', '负例', '附件哈希', '飞书回读', 'Reference控制', 'validation自证', '控制量', '不变量', '连续执行', '重复执行', '连续运行', '重复运行', '复跑')
   foreach ($text in $Texts) {
     foreach ($character in $quoteCharacters) {
       Assert-True (-not $text.Contains([string]$character)) "$Label contains a forbidden quote"
@@ -176,6 +176,10 @@ Assert-SpecificationShape (Join-Path $ArtifactsRoot '任务规格转化.xlsx')
 
 $taskTexts = @(Get-ChildItem -LiteralPath (Join-Path $RepositoryRoot 'task') -File -Filter '*.txt' | ForEach-Object { Get-Content -LiteralPath $_.FullName -Raw })
 Assert-NaturalText $taskTexts 'task text'
+$staticReview = Get-Content -LiteralPath (Join-Path $RepositoryRoot 'qa/static_gate.json') -Raw | ConvertFrom-Json
+Assert-True ($staticReview.result -ceq 'PASS') 'local static review failed'
+Assert-True (@($staticReview.violations).Count -eq 0) 'natural text violations found'
+Assert-True (@($staticReview.archive_and_member_name_violations).Count -eq 0) 'answer control terms found in workbook or member names'
 Assert-NoPublicMetadata
 
 $nodeScript = Join-Path $RepositoryRoot 'scripts/windows_reproduce.mjs'

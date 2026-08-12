@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "result": "PASS",
+  "source": "本地原始记录与现有附件",
+  "online_feedback_used_as_conclusion": false,
+  "root_causes": [
+    {
+      "cause": "工程验证动作进入候选人工作说明",
+      "affected_artifacts": ["任务prompt", "关键动作", "评分表", "任务规格转化.xlsx"],
+      "structural_change": "删除Reference结果、连续执行、缺规则文件测试、失败后目录检查和复跑结果要求",
+      "evidence": "最终正文只保留通知裁决、数据库构建和报表交付"
+    },
+    {
+      "cause": "标准答案逐候选展开形成控制清单",
+      "affected_artifacts": ["关键标准答案.xlsx"],
+      "structural_change": "固定字段缩减为最小业务字段，候选裁决改用原因对应的event_id集合，移除通用Reference成员模板",
+      "evidence": "固定字段、固定集合和固定数值分别承载字段、主键集合与预算数值"
+    },
+    {
+      "cause": "业务交付与内部QA边界混杂",
+      "affected_artifacts": ["输入数据包.zip", "reference.zip", "公开仓库"],
+      "structural_change": "输入只保留源数据库、三份业务规则、SQL起点和运行入口，Reference只保留数据库、完成版SQL和三份业务报表",
+      "evidence": "候选人附件不含validation、QA日志、改参案例或失败探针"
+    }
+  ],
+  "residual_risks": []
+}

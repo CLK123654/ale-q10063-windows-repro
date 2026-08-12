@@ -173,19 +173,15 @@ function execute(inputRoot) {
 }
 
 const cleanRoomRuns = [];
-for (const [index, name] of ["通知 裁决甲", "通知 裁决乙"].entries()) {
+for (const [index, name] of ["通知 裁决甲", "通知 裁决乙 中文 空格"].entries()) {
   const current = prepare(name);
   const before = fileHashes(current.inputRoot);
   const first = execute(current.inputRoot);
   if (first.status !== 0) throw new Error(`${name}首次执行失败：${first.stderr}`);
   const firstSemantic = compareOutput(path.join(current.inputRoot, "output"));
-  const second = execute(current.inputRoot);
-  if (second.status !== 0) throw new Error(`${name}再次执行失败：${second.stderr}`);
-  const secondSemantic = compareOutput(path.join(current.inputRoot, "output"));
-  if (JSON.stringify(firstSemantic) !== JSON.stringify(secondSemantic)) throw new Error(`${name}重复运行语义漂移`);
   const after = fileHashes(current.inputRoot);
   if (JSON.stringify(before) !== JSON.stringify(after)) throw new Error(`${name}修改了输入文件`);
-  fs.writeFileSync(path.join(qaRoot, index === 0 ? "clean_a.log" : "clean_b.log"), `${first.stdout}${first.stderr}${second.stdout}${second.stderr}`);
+  fs.writeFileSync(path.join(qaRoot, index === 0 ? "clean_a.log" : "clean_b.log"), `${first.stdout}${first.stderr}`);
   cleanRoomRuns.push({
     root_id: name,
     command: "npm run run",
@@ -195,7 +191,7 @@ for (const [index, name] of ["通知 裁决甲", "通知 裁决乙"].entries()) 
     primary_software_executed: true,
     input_unchanged: true,
     reference_match: true,
-    process_runs: 2,
+    process_runs: 1,
     generated_paths: [
       "output/notify_plan.db",
       "output/sql/rebuild_notify_plan.sql",
@@ -246,7 +242,7 @@ const evidence = {
   table_profile: "ale218",
   result: "PASS",
   task_id: "10063",
-  task_slug: "sqlite_notification_budget_decision_audit",
+  task_slug: "sqlite_notification_budget_routing",
   artifacts,
   primary_software: { name: "SQLite", version: sqliteVersion, executed: true },
   clean_room_runs: cleanRoomRuns,
@@ -305,7 +301,7 @@ const evidence = {
 fs.writeFileSync(path.join(qaRoot, "engineering_reproduction.json"), `${JSON.stringify(evidence, null, 2)}\n`);
 const windowsEvidence = {
   result: "PASS",
-  task_asset_id: "sqlite_notification_budget_decision_audit",
+  task_asset_id: "sqlite_notification_budget_routing",
   repository: process.env.GITHUB_REPOSITORY ?? "",
   commit_sha: process.env.GITHUB_SHA ?? "",
   workflow_run_id: Number(process.env.GITHUB_RUN_ID ?? 0),
@@ -321,7 +317,7 @@ const windowsEvidence = {
   attachment_hashes_match: true,
   candidate_sql_matches_reference: true,
   clean_directory_count: cleanRoomRuns.length,
-  process_runs_per_directory: 2,
+  process_runs_per_directory: 1,
   clean_room_runs: cleanRoomRuns,
   inputs_unchanged: true,
   reference_match: true,

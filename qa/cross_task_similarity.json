@@ -13,54 +13,54 @@
     {
       "qid": "13762",
       "title_score": 0.2439,
-      "body_score": 0.007
+      "body_score": 0.0086
     },
     {
       "qid": "11326",
       "title_score": 0.24,
-      "body_score": 0.018
+      "body_score": 0.0194
     },
     {
       "qid": "13749",
       "title_score": 0.2381,
-      "body_score": 0.0094
+      "body_score": 0.0096
     },
     {
       "qid": "13717",
       "title_score": 0.2128,
-      "body_score": 0.0259
+      "body_score": 0.0277
     },
     {
       "qid": "10528",
       "title_score": 0.2083,
-      "body_score": 0.0799
+      "body_score": 0.0768
     }
   ],
   "same_software_top_five": [
     {
       "qid": "13762",
       "title_score": 0.2439,
-      "body_score": 0.007
+      "body_score": 0.0086
     },
     {
       "qid": "11326",
       "title_score": 0.24,
-      "body_score": 0.018
+      "body_score": 0.0194
     },
     {
       "qid": "13749",
       "title_score": 0.2381,
-      "body_score": 0.0094
+      "body_score": 0.0096
     },
     {
       "qid": "13717",
       "title_score": 0.2128,
-      "body_score": 0.0259
+      "body_score": 0.0277
     },
     {
       "qid": "10528",
       "title_score": 0.2083,
-      "body_score": 0.0799
+      "body_score": 0.0768
     }
   ],
   "threshold_hits": [],

@@ -11,17 +11,25 @@
     "human_authenticity": 9,
     "conciseness": 9
   },
-  "checks": {
-    "grandiose_claims": false,
-    "promotional_language": false,
-    "vague_attribution": false,
-    "mechanical_three_part_structure": false,
-    "negative_parallelism": false,
-    "excessive_connectors": false,
-    "excessive_quotes": false,
-    "mixed_boundary_spaces": false,
-    "unsupported_facts": false,
-    "online_ai_detection_used_as_conclusion": false
+  "scope": [
+    "任务名称",
+    "任务概要",
+    "任务prompt",
+    "关键动作",
+    "评分表",
+    "环境依赖",
+    "相关专业软件的关键步骤",
+    "input_data/README.md",
+    "关键标准答案.xlsx全部五页",
+    "任务规格转化.xlsx",
+    "Reference业务成员名称"
+  ],
+  "review": {
+    "business_voice": "以发送服务、运营人员和活动负责人的交接需要组织内容，直接说明三类消费者使用哪些交付",
+    "structural_changes": "删除答案引用、重复运行、缺文件测试、动态改参和validation自证，把候选人工作收束到SQLite通知裁决与三份业务报表",
+    "language_changes": "删去评测口吻和模板式收口，保留时区静默、幂等、去重与预算排序所需的公开规则",
+    "numeric_sources": "报告窗口来自window_policy.json，配额来自campaign_rules，候选主键和时间来自notify_control.db，精确业务结果仅在标准答案中出现",
+    "residual_risk": "SQLite对象名和通知规则字段含较多英文，但都用于定位真实数据库对象和报表合同"
   },
-  "review_note": "正文直接交代发送服务、运营和活动负责人的用途，再按真实数据流说明输入、SQLite裁决和交付。规则都落在输入文件或数据库字段上，没有宣传式背景、模糊权威、凑数排比和自动判卷口吻。"
+  "online_ai_detection_used_as_conclusion": false
 }

@@ -1,8 +1,8 @@
-1. 在SQLite中打开database/notify_control.db，用.tables和.schema核对五张源表、主键与业务字段。
-2. 读取window_policy.json，将报告起止时刻写入临时运行合同；读取decision_policy.csv，将原因次序和说明装入临时规则表。
-3. 使用datetime、time和printf换算本地时刻，用分支条件处理跨午夜静默区间。
-4. 使用json_each检查allowed_tiers_json，以EXISTS和julianday处理幂等记录及dedupe_minutes窗口。
-5. 使用窗口函数累计用户活动日配额，再按priority、requested_at_utc和event_id计算活动额度占用次序。
-6. 在output/sql/rebuild_notify_plan.sql中重建candidate_decision、send_plan、suppression_audit、campaign_quota_report和repair_meta，并为业务主键建立唯一索引。
-7. 执行npm run run，由SQLite生成notify_plan.db，再按report_schema.json导出三份CSV。
-8. 检查PRAGMA integrity_check、候选覆盖、发送与抑制互斥、配额非负和重复运行结果，再交付规定文件。
+1. 使用SQLite打开database/notify_control.db，通过.tables和.schema查看五张源表、主键及业务字段。
+2. 读取window_policy.json中的报告时段，将decision_policy.csv的裁决次序和说明装入本轮规则表。
+3. 使用datetime、time和printf换算本地时刻，并以左闭右开区间处理跨午夜静默时段。
+4. 使用json_each核对活动允许的订阅等级，以EXISTS和julianday处理历史幂等及dedupe_minutes窗口。
+5. 使用窗口函数累计用户活动日配额，再按priority、requested_at_utc和event_id计算活动额度占用顺序。
+6. 在output/sql/rebuild_notify_plan.sql中重建candidate_decision、send_plan、suppression_audit、campaign_quota_report和repair_meta，并为业务主键建立唯一约束。
+7. 执行npm run run，由SQLite生成notify_plan.db，并按report_schema.json导出三份CSV。
+8. 查询PRAGMA integrity_check、候选覆盖、发送与抑制互斥及配额余量，核对数据库与报表中的业务记录。

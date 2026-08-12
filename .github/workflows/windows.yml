@@ -51,4 +51,4 @@ jobs:
           name: windows-2025-evidence
           path: ${{ runner.temp }}/ale-evidence
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 1

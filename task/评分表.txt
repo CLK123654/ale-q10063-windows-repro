@@ -1,97 +1,76 @@
-总分100分。
+检查项内容：交付数据库、完成版SQL和三份业务报表
+标准答案或判定规则：output/notify_plan.db、output/sql/rebuild_notify_plan.sql、output/reports/send_plan.csv、output/reports/suppression_audit.csv和output/reports/campaign_quota_report.csv均存在且可读
+关键字段或路径：上述五个相对路径
+容差及来源：路径与文件名精确比较，来源为任务Prompt
+失败边界：任一文件缺失、改名或不可读取
+可观察证据及定位方式：列出output目录，使用SQLite打开数据库并读取SQL与CSV
+客观硬性标准：五个文件齐全，notify_plan.db通过PRAGMA integrity_check
+通过阈值：五个交付物全部满足
+优先级：Gate项
+所属层级：L1任务指令遵循层
 
-1. 交付边界，10分
-检查项内容：核对五个规定交付物及目录结构。
-标准答案或判定规则：output/notify_plan.db、output/sql/rebuild_notify_plan.sql和output/reports下三份指定CSV全部存在，output中没有替代它们的汇总文件。
-关键字段或路径：五个固定路径。
-容差及来源：路径与文件名无容差，来源为任务Prompt。
-失败边界：数据库、完成版SQL或任一报表缺失、改名、不可读时本项不通过。
-可观察证据及定位方式：列出交付目录并分别打开数据库、SQL和CSV。
-客观硬性标准：五个文件均可读取，数据库能被SQLite打开。
-通过阈值：全部满足得10分，否则得0分。
-优先级：Gate项。
-所属层级：L1任务指令遵循层。
+检查项内容：源表保真与目标库结构
+标准答案或判定规则：subscribers、campaign_rules、candidate_queue、delivery_history和suppression_overrides的结构与业务行和输入库一致；目标库包含candidate_decision、send_plan、suppression_audit、campaign_quota_report和repair_meta
+关键字段或路径：database/notify_control.db、output/notify_plan.db、sqlite_schema及五张源表的主键
+容差及来源：表结构与业务值无容差；索引名称和数据库页布局可不同
+失败边界：源表结构或业务行被改写，目标库损坏，或缺少任务要求的派生表
+可观察证据及定位方式：按主键比较两库源表，查询sqlite_schema并执行PRAGMA integrity_check
+客观硬性标准：五张源表逐行一致，完整性结果为ok，五张派生表均可查询
+通过阈值：源表保真、数据库完整性和派生表结构全部满足
+优先级：Gate项
+所属层级：L3输入数据导入与完整性层
 
-2. 源表保真与数据库结构，12分
-检查项内容：确认派生计算没有改写五张源表，并检查目标数据库结构。
-标准答案或判定规则：subscribers、campaign_rules、candidate_queue、delivery_history和suppression_overrides的建表语句与逐行内容和输入库一致；目标库还包含candidate_decision、send_plan、suppression_audit、campaign_quota_report和repair_meta。
-关键字段或路径：database/notify_control.db、output/notify_plan.db、sqlite_schema及五张源表主键。
-容差及来源：表结构和业务值无容差，来源为输入数据库。
-失败边界：任一源表被改写、目标库损坏或缺少派生表时本项不通过。
-可观察证据及定位方式：比较两库的sqlite_schema和主键排序结果，执行PRAGMA integrity_check。
-客观硬性标准：源表逐行相同，integrity_check返回ok，十张业务表及repair_meta均可查询。
-通过阈值：全部满足得12分，否则得0分。
-优先级：Gate项。
-所属层级：L3输入数据导入与完整性层。
+检查项内容：候选覆盖与前置裁决
+标准答案或判定规则：candidate_queue中的event_id在candidate_decision中各出现一次；N012为unknown_user，N013为unknown_campaign，N015为already_delivered，N005为subscriber_paused，N008为manual_suppression，N007为tier_not_allowed
+关键字段或路径：candidate_decision.event_id、candidate_decision.final_reason和rules/decision_policy.csv
+容差及来源：event_id集合与final_reason精确比较，来源为源数据库和decision_policy.csv
+失败边界：候选漏记、一个event_id对应多条裁决，或列明候选没有命中先出现的适用规则
+可观察证据及定位方式：按event_id连接candidate_queue和candidate_decision，并按rank核对裁决规则
+客观硬性标准：候选主键集合闭合，event_id唯一，六个列明候选的原因正确
+通过阈值：全部候选有且只有一个裁决，列明原因全部正确
+优先级：高权重项
+所属层级：L6领域计算与专业规则层
 
-3. 裁决覆盖与前置次序，16分
-检查项内容：检查每个候选是否只得到一个结果，并核对前置抑制次序。
-标准答案或判定规则：candidate_queue的15个event_id在candidate_decision中各出现一次；N012为unknown_user，N013为unknown_campaign，N015为already_delivered，N005为subscriber_paused，N008为manual_suppression，N007为tier_not_allowed。
-关键字段或路径：candidate_decision.event_id、final_reason和rules/decision_policy.csv。
-容差及来源：事件覆盖和原因值无容差，来源为候选队列、订阅者、活动规则、送达历史及人工抑制表。
-失败边界：候选缺失、重复、一个候选出现多个最终原因，或任一列明事件的原因错误时本项不通过。
-可观察证据及定位方式：按event_id关联candidate_queue与candidate_decision，再按rank核对decision_policy.csv。
-客观硬性标准：覆盖率为15/15，event_id唯一，六个列明事件全部命中正确原因。
-通过阈值：全部满足得16分，否则得0分。
-优先级：高权重项。
-所属层级：L6领域计算与专业规则层。
+检查项内容：本地静默、候选去重与两级配额
+标准答案或判定规则：N004的local_time为03:06:00且final_reason为quiet_hours；N002为duplicate_candidate；N009和N014为user_daily_cap；N010为campaign_cap_reached
+关键字段或路径：requested_at_utc、timezone_offset_min、quiet_start_local、quiet_end_local、dedupe_minutes、daily_cap、campaign_cap和priority
+容差及来源：时间精确到秒，配额为整数且容差为0，来源为notify_control.db和window_policy.json
+失败边界：本地时间、左闭右开边界、去重范围、UTC日期累计或活动排序任一错误
+可观察证据及定位方式：查询candidate_decision的local_time、final_reason、历史计数和预算占用顺序
+客观硬性标准：五个列明候选命中规定结果，活动配额只统计报告窗口内送达记录
+通过阈值：列明候选与两级预算计算全部正确
+优先级：高权重项
+所属层级：L6领域计算与专业规则层
 
-4. 时区、去重与两级配额，18分
-检查项内容：核对本地时间、跨午夜静默、去重窗口、用户日配额和活动配额占用。
-标准答案或判定规则：N004的local_time为03:06:00且原因是quiet_hours；N002在N001后3分钟，落入60分钟窗口并判为duplicate_candidate；N009和N014为user_daily_cap；N010为campaign_cap_reached。
-关键字段或路径：requested_at_utc、timezone_offset_min、quiet_start_local、quiet_end_local、dedupe_minutes、daily_cap、campaign_cap和priority。
-容差及来源：时间与计数无容差，来源为输入数据库及window_policy.json。
-失败边界：本地时间、边界区间、去重对象、日累计或活动排序任一错误时本项不通过。
-可观察证据及定位方式：查询candidate_decision的local_time、各阶段原因、历史计数和候选序号。
-客观硬性标准：五个列明事件全部命中规定结果，活动配额统计只使用报告窗口内送达记录。
-通过阈值：全部满足得18分，否则得0分。
-优先级：高权重项。
-所属层级：L6领域计算与专业规则层。
+检查项内容：发送计划
+标准答案或判定规则：send_plan表和send_plan.csv的event_id顺序为N001、N003、N006、N011，send_priority依次为90、50、50、30，provider_message_id依次为idem-N001、idem-N003、idem-N006、idem-N011，action均为send
+关键字段或路径：output/notify_plan.db中的send_plan及output/reports/send_plan.csv
+容差及来源：列名、业务值和下游入队顺序精确比较，来源为report_schema.json和候选裁决
+失败边界：事件集合、顺序、优先级、幂等消息号、action或数据库与CSV任一不一致
+可观察证据及定位方式：按report_schema.json声明顺序读取CSV，并查询数据库send_plan
+客观硬性标准：规定列顺序正确，四条业务记录与数据库一致，provider_message_id唯一
+通过阈值：事件、字段和入队顺序全部满足
+优先级：高权重项
+所属层级：L7产物结构或Schema或专业对象层
 
-5. 发送计划，14分
-检查项内容：核对可入队消息及发送顺序。
-标准答案或判定规则：send_plan表和send_plan.csv均有4行，event_id依次为N001、N003、N006、N011；send_priority依次为90、50、50、30；provider_message_id依次为idem-N001、idem-N003、idem-N006、idem-N011；action均为send。
-关键字段或路径：output/reports/send_plan.csv及output/notify_plan.db中的send_plan。
-容差及来源：行数、列、值和顺序无容差，来源为report_schema.json和候选裁决结果。
-失败边界：行数、事件集合、顺序、优先级、幂等消息号或action任一不符时本项不通过。
-可观察证据及定位方式：按CSV原始行序与send_plan排序查询逐行比较。
-客观硬性标准：九列顺序正确，四行数据与数据库一致，provider_message_id唯一。
-通过阈值：全部满足得14分，否则得0分。
-优先级：高权重项。
-所属层级：L7产物结构或Schema或专业对象层。
+检查项内容：抑制审计
+标准答案或判定规则：suppression_audit包含already_delivered、campaign_cap_reached、duplicate_candidate、manual_suppression、quiet_hours、subscriber_paused、tier_not_allowed、unknown_campaign和unknown_user各一条，user_daily_cap两条；detail来自decision_policy.csv
+关键字段或路径：output/notify_plan.db中的suppression_audit及output/reports/suppression_audit.csv的event_id、reason、detail和requested_at_utc
+容差及来源：事件与原因集合无序比较，CSV按report_schema.json排序，detail精确取自decision_policy.csv
+失败边界：未发送候选漏记、event_id不唯一、原因分布错误、说明脱离规则或数据库与CSV不一致
+可观察证据及定位方式：按event_id连接candidate_decision与suppression_audit，分组统计reason并回连裁决规则
+客观硬性标准：十一条抑制记录与发送计划互斥，原因分布和说明正确
+通过阈值：全部抑制事件、原因和说明满足
+优先级：高权重项
+所属层级：L9跨产物一致性与可追溯层
 
-6. 抑制审计，14分
-检查项内容：核对未发送候选、原因和运营说明。
-标准答案或判定规则：suppression_audit表和CSV均有11行。already_delivered、campaign_cap_reached、duplicate_candidate、manual_suppression、quiet_hours、subscriber_paused、tier_not_allowed、unknown_campaign和unknown_user各1行，user_daily_cap有2行；detail逐项来自decision_policy.csv。
-关键字段或路径：output/reports/suppression_audit.csv、suppression_audit.event_id、reason、detail和requested_at_utc。
-容差及来源：原因计数、文案和排序无容差，来源为候选裁决及decision_policy.csv。
-失败边界：候选漏记、重复、原因分布错误、detail脱离规则表或排序错误时本项不通过。
-可观察证据及定位方式：按requested_at_utc和event_id排序，分组统计reason并回连裁决规则。
-客观硬性标准：11个被抑制event_id与发送计划互斥，原因计数及说明全部正确。
-通过阈值：全部满足得14分，否则得0分。
-优先级：高权重项。
-所属层级：L9跨产物一致性与可追溯层。
-
-7. 活动配额报告，10分
-检查项内容：核对每个活动的历史占用、本次计划、抑制数量和剩余额度。
-标准答案或判定规则：报告按campaign_id升序有3行。CMP_CREATOR四项计数为0、2、2、1；CMP_FLASH为3、1、7、0；CMP_REENGAGE为0、1、1、1。daily_cap、campaign_cap和channel与campaign_rules一致。
-关键字段或路径：output/reports/campaign_quota_report.csv及campaign_quota_report表的八列。
-容差及来源：行数、计数、额度和排序无容差，来源为campaign_rules、delivery_history、send_plan和suppression_audit。
-失败边界：活动缺失、多出、计数错误、额度为负或CSV与数据库不一致时本项不通过。
-可观察证据及定位方式：逐活动重算报告窗口历史量和本次两类结果，再与CSV逐行比对。
-客观硬性标准：三行八列完整，三组规定计数全部一致，remaining_after_plan不小于0。
-通过阈值：全部满足得10分，否则得0分。
-优先级：普通项。
-所属层级：L9跨产物一致性与可追溯层。
-
-8. 可执行重建与失败收口，6分
-检查项内容：检查入口能重复重建，并在输入缺失时清除动态结果。
-标准答案或判定规则：连续两次执行npm run run均返回0，数据库派生表和三份CSV的结构化语义相同；移走decision_policy.csv后再次执行返回非零，notify_plan.db和reports目录均不存在，完成版SQL及原始输入仍在。
-关键字段或路径：package.json、tools/run-task.mjs、output目录和进程退出码。
-容差及来源：退出码和动态文件状态无容差；SQLite数据库允许内部页布局不同，只比较表结构与业务行。
-失败边界：入口未真实调用SQLite、重复运行漂移、输入缺失仍返回0或遗留数据库及报表时本项不通过。
-可观察证据及定位方式：保存三次进程退出码，比较两次SQLite查询与CSV解析结果，检查失败后的目录成员。
-客观硬性标准：SQLite进程实际执行，两次正常结果相同，规则缺失时非零退出且没有动态交付物。
-通过阈值：全部满足得6分，否则得0分。
-优先级：高权重项。
-所属层级：L8运行验证或可执行行为层。
+检查项内容：活动配额报告
+标准答案或判定规则：CMP_CREATOR的existing_sent_count、planned_send_count、suppressed_count和remaining_after_plan依次为0、2、2、1；CMP_FLASH依次为3、1、7、0；CMP_REENGAGE依次为0、1、1、1
+关键字段或路径：output/notify_plan.db中的campaign_quota_report及output/reports/campaign_quota_report.csv的八列
+容差及来源：计数与额度为整数且容差为0，campaign_id按report_schema.json升序排列，daily_cap、campaign_cap和channel取campaign_rules
+失败边界：活动缺失、计数或额度错误、remaining_after_plan为负，或数据库与CSV不一致
+可观察证据及定位方式：逐活动汇总报告窗口内delivery_history、send_plan和suppression_audit，再与配额报告对照
+客观硬性标准：三个活动的字段完整，规定计数正确，活动余量不小于0
+通过阈值：三个活动全部满足
+优先级：普通项
+所属层级：L9跨产物一致性与可追溯层
