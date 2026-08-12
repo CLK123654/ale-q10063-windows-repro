@@ -1,6 +1,6 @@
 操作系统： Windows11、macOS或主流64位Linux。
 
-主软件为SQLite，使用支持本题时间换算、JSON展开和窗口累计的SQLite3.40或更高兼容版本。Node.js20或更高版本负责读取规则、调用sqlite3并导出CSV；Windows11可在PowerShell中执行npm入口，不依赖WSL、容器或POSIX Shell。
+主软件为SQLite，使用支持本题时间换算、JSON展开和窗口累计的SQLite3.40或更高兼容版本。Node.js20或更高版本负责读取规则、调用sqlite3并导出CSV；Windows11可在PowerShell中执行npm入口。
 
 执行账号需要读取database、rules、starter和tools目录，并写入output。正式处理保持离线，不连接通知平台、消息供应商或外部数据库；输入数据库与规则文件不得改写。
 
