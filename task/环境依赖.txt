@@ -1,6 +1,6 @@
 支持Windows11、macOS和主流64位Linux。主软件为SQLite3.40或更高版本，Windows11使用官方sqlite3.exe。SQLite实际执行时间换算、JSON展开、窗口累计、关联裁决、派生表重建和完整性查询；只检查SQL文本不能替代这条处理链。
 
-辅助运行时为Node.js20或更高版本，PowerShell或系统终端用于进入input_data目录并执行npm run run。Node.js负责读取规则、调用SQLite命令行程序和导出CSV，不需要数据库服务器、商业许可证或GPU。SQLite与Node.js按各自开源许可使用。
+辅助运行时为Node.js20或更高版本，PowerShell或系统终端用于进入input_data目录并执行npm run run。Node.js负责读取规则、调用SQLite命令行程序和导出CSV，不需要数据库服务器或GPU。
 
 建议准备双核CPU、2GB内存和200MB可写磁盘。执行账号需要读取database、rules、starter和tools目录，可写output目录，并能运行PATH中的sqlite3程序。正式运行保持离线，不连接通知平台、消息供应商或外部数据库；单次入口最长运行30秒。
 

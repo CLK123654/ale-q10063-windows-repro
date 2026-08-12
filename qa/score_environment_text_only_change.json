@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "task_key": "id:10063",
+  "change_type": "score_environment_text_only_change",
+  "score": {
+    "total": 100,
+    "item_points": [
+      14,
+      14,
+      18,
+      20,
+      14,
+      12,
+      8
+    ],
+    "sum": 100
+  },
+  "environment_review": {
+    "os": true,
+    "software": true,
+    "code_dependency": true,
+    "cpu": true,
+    "gpu": true,
+    "disk": true,
+    "timeout": true,
+    "license_omitted": true
+  },
+  "attachment_sha256": {
+    "输入数据包.zip": "3a3fd9dd7fd7410c2f2f947867955938ac975e2f6f354c4d6143a516390cdc48",
+    "reference.zip": "abe46cc48ad69153d15120723b02581cacd448fdd2e537c3bbfb898a906e8226",
+    "关键标准答案.xlsx": "f4c632c83e0a9c512932e3281e1a93870df14f3ca456062e6477007145cff465",
+    "任务规格转化.xlsx": "f4011749f3e55d80be7c1d669aaea924def03df58b8bb51a1c6fb66b05710bdf"
+  },
+  "windows_rerun_required": false,
+  "reason": "评分与环境文字修正，不改变业务交付或四附件",
+  "prompt_coverage_audit": {
+    "result": "PASS",
+    "item_count": 7,
+    "semantic_change_required": false,
+    "note": "现有评分项覆盖Prompt交付链，未发现需要合并的重复项或遗漏要求"
+  }
+}
