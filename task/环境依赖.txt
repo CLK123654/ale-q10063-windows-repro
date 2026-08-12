@@ -1,4 +1,4 @@
-操作系统：Windows11、macOS或主流64位Linux。
+操作系统： Windows11、macOS或主流64位Linux。
 
 主软件为SQLite，使用支持本题时间换算、JSON展开和窗口累计的SQLite3.40或更高兼容版本。Node.js20或更高版本负责读取规则、调用sqlite3并导出CSV；Windows11可在PowerShell中执行npm入口，不依赖WSL、容器或POSIX Shell。
 
